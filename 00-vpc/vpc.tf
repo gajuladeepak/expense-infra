@@ -1,5 +1,5 @@
 module "vpc" {
-    source = "../../terraform-aws-vpc"
+    source = "git::https://github.com/daws-81s/terraform-aws-vpc.git?ref=main"
     # project_name = "expense"
     # environment = "dev"     #instead of keeping here placing them variable file and passing its reference here
     vpc_cidr = var.vpc_cidr
