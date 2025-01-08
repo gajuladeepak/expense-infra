@@ -25,6 +25,22 @@ pipeline {
                     """
                 }
             }
+
+        }
+
+    }
+
+    stages {
+        stage('Apply or Destroy') {
+            steps {
+                withAWS(region: 'us-east-1', credentials: 'aws-creds') {
+                    sh """
+                        cd 00-vpc
+                        terraform init -reconfigure
+                        terraform plan -out=tfplan
+                    """
+                }
+            }
             
         }
 
