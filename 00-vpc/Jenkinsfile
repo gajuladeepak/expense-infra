@@ -12,11 +12,9 @@ pipeline {
     // }
 
     parameters {
-        choice(name: 'ACTION' , choices: ['apply', 'destroy'], description: 'Select Action')
+        choice(name: 'ACTION', choices: ['apply', 'destroy'], description: 'Select Action')
     }
-
-    
-     stages {
+    stages {
         stage('Init and Plan') {
             steps {
                 withAWS(region: 'us-east-1', credentials: 'aws-creds') {
@@ -29,6 +27,34 @@ pipeline {
             }
         }
 
+        stage('Apply or Destroy') {
+            /* input {
+                message "Should we continue to ${params.ACTION}"
+                ok "Yes, we should."
+            } */
+            steps {
+                withAWS(region: 'us-east-1', credentials: 'aws-creds') {
+                    sh """
+                        cd 00-vpc
+                        if [ ${params.ACTION} == 'apply' ]
+                        then
+                            terraform apply -auto-approve tfplan
+                        elif [ ${params.ACTION} == 'destroy' ]
+                        then
+                            terraform destroy -auto-approve
+                        fi
+                    """
+                }
+            }
+        }
+        stage ('Trigger SG') {
+            when {
+                expression { params.ACTION == 'apply' }
+            }
+            steps{
+                build job: '10-sg', parameters: [string(name: 'ACTION', value: "apply")], wait: false
+            }
+        }
     }
 
     post {
