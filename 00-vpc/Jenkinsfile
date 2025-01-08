@@ -30,7 +30,6 @@ pipeline {
 
     }
 
-    stages {
         stage('Apply or Destroy') {
             steps {
                 withAWS(region: 'us-east-1', credentials: 'aws-creds') {
