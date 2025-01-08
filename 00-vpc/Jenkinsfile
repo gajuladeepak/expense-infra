@@ -28,7 +28,7 @@ pipeline {
 
         }
 
-    }
+    
 
         stage('Apply or Destroy') {
             steps {
@@ -48,6 +48,8 @@ pipeline {
         }
 
     }
+
+
 
 
 
