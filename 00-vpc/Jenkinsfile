@@ -32,18 +32,18 @@ pipeline {
 
         stage('Apply or Destroy') {
 
-            // input {
-            //         message "Should we continue to ${params.ACTION}"
-            //         ok "Yes, we should."
-            // }
+            input {
+                    message "Should we continue to ${params.ACTION}"
+                    ok "Yes, we should."
+            }
             steps {
                 withAWS(region: 'us-east-1', credentials: 'aws-creds') {
                     sh """
                         cd 00-vpc
-                        if [ ${params.ACTION} == 'APPLY' ]
+                        if [ ${params.ACTION} == 'apply' ]
                         then
                             terraform apply -auto-approve tfplan
-                        elif [ ${params.ACTION} == 'DESTROY' ]
+                        elif [ ${params.ACTION} == 'destroy' ]
                         then
                            terraform destroy -auto-approve tfplan
                         fi
