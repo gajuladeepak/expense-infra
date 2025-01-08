@@ -47,12 +47,12 @@ pipeline {
                 }
             }
         }
-        stage ('Trigger SG') {
+        stage ('Destroy VPC') {
             when {
-                expression { params.ACTION == 'apply' }
+                expression { params.ACTION == 'destroy' }
             }
             steps{
-                build job: '10-sg', parameters: [string(name: 'ACTION', value: "apply")], wait: false
+                build job: '00-vpc', parameters: [string(name: 'ACTION', value: "destroy")], wait: false
             }
         }
     }
