@@ -1,4 +1,3 @@
-
 resource "aws_cloudfront_distribution" "expense" {
   origin {
     domain_name              = "${var.project_name}-${var.environment}.${var.zone_name}"
